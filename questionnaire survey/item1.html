@@ -1,0 +1,119 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+		*{
+			color:#333333;
+		}
+			#head{
+				height:60px;
+				background: #D8D8D8;
+				/*line-height:24px;*/
+			}
+			p{	position: relative;
+				width: 94%;
+				line-height:25px;
+				margin: auto;
+				top:6px;
+				
+				font-size: 17px;
+				color: #000000;
+			}
+			table{
+				margin: auto;
+				position: relative;
+				width:94%;
+			}
+			input{
+				width:94%;
+				height: 50px;
+				background:#CF2D28!important;
+				font-size: 18px !important;
+				color: white !important;
+			}
+			.td1{
+				width:30%;
+				height:50px;
+				font-size: 20px;	
+			}
+			table{
+				border: none;
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div id="div">
+			<div id="head">
+				<p>感谢您参与此次调查，答卷后您将获得50元手机充值卡一张!</p>
+			</div>
+			<table >
+				<tr><td class="td1">调查员</td><td></td></tr>
+				<tr><td></td>
+					<td height="100px" style="display: block; position: relative;">
+						<table height="100px">
+							<tr height="30px"><td style="width: 30%;">姓&nbsp;&nbsp;&nbsp;名：</td><td id="name">Data</td></tr>
+							<tr height="30px"><td>身份证:</td><td id="sfnuber">Data</td></tr>
+							<tr height="30px"><td>手机号:</td><td id='sjh'>Data</td></tr>
+						</table>
+					</td>
+				</tr>
+				<tr><td class="td1">调查介绍</td><td></td></tr>
+				<tr>
+					<td colspan="2">
+						<p id="jies">
+						调查户您好！为了把握当期居民财富增长的具体趋势，并向有关政府部门提出政策建1议，经济日报开展此项专门调查。请您按照您的实际情况和自己的真实想法如实回答问题，认真协助调查员填写调查表。我们将严格遵守统计法，对您个人的信息给以保密。谢谢合作！
+						</p>
+					</td>
+				</tr> 
+			</table>
+			<div >
+				<input type="button" id="inp"  value="进入答题"/ style="position:relative;top: 20px;display: block;margin: auto;background-clip: padding-box !important;">
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		mui.init();
+		var type,val,sur;
+		var nam=document.getElementById('name');
+		var sfnumber=document.getElementById('sfnuber');
+		var sj=document.getElementById('sjh')
+		mui.plusReady(function(){
+			type=plus.webview.currentWebview().json_type;
+			valu=plus.webview.currentWebview().text_value;
+			sur=plus.webview.currentWebview().sure;
+			document.getElementById('jies').innerHTML=valu;
+//			alert(sur)
+			nam.innerHTML=type.user.realName;
+			sfnumber.innerHTML=type.user.IDCard;
+			sj.innerHTML=type.user.phoneNum
+		})
+		document.getElementById('inp').addEventListener('tap',function(){
+			mui.openWindow({
+					url:'dati.html', 
+					id:'dati',
+					extras:{
+						json_ty:type,
+						sure:sur
+					},
+					show:{
+						autoshow:true,
+						duration:700
+					}  
+				});
+		})
+		function sx(){
+			var wv=plus.webview.currentWebview().opener();
+//			alert('ok')
+			wv.evalJS('sx()')
+		}
+	</script>
+</html>

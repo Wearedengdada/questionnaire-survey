@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+			#div{
+				position: relative;
+				top:70px;
+			}
+			#div #conctent{
+				width:94%;
+				margin: auto;
+			}
+			#bj{
+				position: relative;
+				background: #B6B6B6;
+				height: 200px;
+				top: 10px;
+			}
+			input{
+				top:30px;
+				background-clip: padding-box !important;
+			}
+			#bj img{
+				width: 100%;
+				height: 200px; 
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">拍照留影</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="div">
+			<div id="conctent">
+				<h5>预览</h5>
+				<div id="bj">
+					<img src="img/default_icon.png" style="position: relative; display: block;width:100px;height:80px; margin: auto;top:60px;"/>
+				</div>
+			</div>
+			<input type="button" style="display: block; width:80%;height: 50px;margin: auto;border-radius:30px;background: #CF2D28;" id="button"  onclick="dj()"  value="拍照">
+		</div>
+		
+	</body>
+		<script type="text/javascript">
+			document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+			function dj() {
+						var cmr= plus.camera.getCamera( 0);   //获取摄像头管理对象
+						var res=cmr.supportedImageResolutions[0];//获取摄像头像素
+						var fmt=cmr.supportedImageFormats[0];//获取摄像头的拍照格式
+						var imag=document.getElementsByTagName('img');// 获取上面的img元素
+//						plus.gallery.pick()   从系统相册中选择照片并返回路径
+						cmr.captureImage(						//进行拍照操作  cmr.startVideoCapture( successCB, errorCB, option );进行摄像操作
+						function(path){
+//							plus.gallery.save(path); 	将指定路径的照片保存到系统相册
+//							alert(path)	//拍照成功返回参数	path照片保存路径
+							plus.io.resolveLocalFileSystemURL( path,function(even){   //通过URL参数获取目录对象或文件对象
+							var fil=even.fullPath;								//even获取的路径
+//							alert(fil);
+							var wv=plus.webview.currentWebview().opener()
+							plus.storage.setItem('zp',fil);
+							wv.evalJS('dd()')
+							document.getElementById('bj').innerHTML="<img src='"+fil+"'/>"
+						},
+						function(){ //获取路径失败返回参数}
+						})
+						},
+						function(error_){
+							alert(error_)
+							//拍照失败返回参数
+						}, 
+						{
+							filename:'_doc/', 
+							format:fmt ,
+							resolution:res
+							//设置文件格式，路径，像素，这是一个Json对象
+						}
+					);
+		}
+		</script>
+</html>

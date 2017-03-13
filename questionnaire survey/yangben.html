@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+		body{
+			background: white;
+		}
+			h1{
+				font-size:19px !important;
+			}
+			a{
+				display: block;
+				position: relative;
+				color:black; 
+				width:50% !important;
+				height: 50px;
+				line-height: 50px;
+				font-size:19px;
+				text-align: center;
+				float: left;
+				margin: auto;
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">抽取样本</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="segmentedControl" class="mui-segmented-control" style="position: relative;top:60px; border: none;">
+					<div style="clear: both;"></div>
+					<a id="lr" href="chakan.html" style="background: url(img/tab_line.png)right no-repeat;">录入住户</a>
+					<a id="cq" href="luru.html">已抽取样本</a>
+		</div>
+	</body> 
+	<script type="text/javascript">
+		//点击返回上个页面
+		document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+		var type,xiaoqu;
+		
+		mui.init(function(){
+			//预加载
+				preloadPages:[
+				    {
+				      url:'yangben.html',
+				      id:title, 
+				      styles:{},//窗口参数
+				      extras:{},//自定义扩展参数
+				      subpages:['chakan.html', 'luru.html']//预加载页面的子页面
+				    }
+			    ]
+		})
+			var substyle = {  
+				top:'115px'
+			}
+			var subpages = ['chakan.html', 'luru.html'];
+			mui.plusReady(function(){
+				document.getElementById('lr').style.color='red'
+				xiaoqu=plus.webview.currentWebview().xiaoqu;
+				type= plus.webview.currentWebview().json_ty;
+				var self = plus.webview.currentWebview();
+				for(var i=0;i<2;i++){
+						subView = plus.webview.create(subpages[i],subpages[i],
+						substyle,
+						{
+							xiaoq:xiaoqu
+						}
+						);
+					if(i>0){
+						subView.hide();
+					}
+					self.append(subView); //在获取的当前窗口创建子窗口
+				}
+				
+				
+			})
+			var currentViewUrl = subpages[0];
+				mui('#segmentedControl').on('tap','a',function(){
+					var url_ = this.getAttribute('href'); 
+					plus.webview.hide(currentViewUrl);
+					plus.webview.show(url_,"slide-in-right",1000);//显示被点击的页面
+					currentViewUrl = url_;//重新复制当前页面url，是被点击的这个页面的url
+				})
+			var a=document.getElementsByTagName('a');
+			document.getElementById('lr').addEventListener('tap',function(){
+					a[0].style.color='red';
+					a[1].style.color='black'
+			})
+			document.getElementById('cq').addEventListener('tap',function(){
+					a[0].style.color='black';
+					a[1].style.color='red';
+			})
+	</script>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			.a-abc{ 
+				display: -webkit-box;
+			    overflow: hidden;			
+			    white-space: normal !important;
+			    text-overflow: ellipsis;
+			    word-wrap: break-word;			
+			    -webkit-line-clamp: 5;
+			    -webkit-box-orient: vertical;
+
+			}
+		</style>
+	</head>
+
+	<body>
+	
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">问卷调查</h1>
+			<a id="yonghu" class="mui-pull-right" style="color: white;">
+			  <img src="img/denglu/login_user_icon.png" style="position: relative; width:30px;top:10px;">
+		 	</a>  
+		</header>
+		<!--下拉刷新容器-->
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper" style="position: relative; top: 10px;"> 
+			<div class="mui-scroll">
+				<!--数据列表-->
+				<ul class="mui-table-view " id="ul">
+					
+				</ul>
+			</div>
+		</div> 
+		<script src="js/mui.min.js"></script>
+		<script src="js/zhuye.js"></script>
+	</body>
+
+</html>

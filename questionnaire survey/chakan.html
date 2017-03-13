@@ -1,0 +1,462 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+ 		<style type="text/css">
+ 		body,html{
+ 			height: 100%;
+ 			background:white; 
+ 		}
+ 			#div{
+ 				width: 94%;
+ 				margin: auto;
+ 				height: 100%;
+ 			}
+ 			#top{
+ 				background: #CCCCCC;
+ 			}
+ 			.top li{	
+ 				position: relative;
+ 				height:25px;
+ 				list-style: none;
+ 				left:10px;
+ 			}
+			#inp{
+				position: relative;
+				width: 100%;
+				top: 10px;
+			}
+ 			button{
+ 				height:45px;
+ 				width:32%;
+ 				text-align: center;
+ 				background-clip: padding-box !important;
+ 				background: #CF2D28;
+ 				color: white;
+ 				font-size: 16px;
+ 			}
+ 			#contont{
+ 				height:55%;
+ 			}
+ 			#ull{
+ 				min-height:700px
+ 			}
+ 			#div2 button{
+ 				height: 45px;
+ 				width: 47%;
+ 				color: white !important;
+ 				background: #CF2D28 !important; 
+ 				border-radius: 30px !important;
+ 			}
+ 			#tab{
+				position: relative;
+				top:30px;
+				margin: auto;
+				color: white;
+				text-align: center;
+			}
+			#tab1 tr{
+				height:35px;
+			}
+			a{
+				color: white;
+			}
+			#ull button{
+				float: right;
+				height: 30px;
+				width: 60px;
+				font-size:12px;
+			}
+			#ull h4{
+				height: 30px;
+				line-height: 30px;
+			}
+			#ull p{
+				width: 94%;
+				margin: auto;
+			}
+			#pict{
+				display:none;
+			}
+ 		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div id="div">
+			<header class="mui-bar mui-bar-nav" style="height:120px;background: white; box-shadow: none;">
+				<div class="top" style="background: #EFEFF4;">
+					<li>名称：<font id="neir"></font></li>
+					<li>已录入&nbsp;<font id="neir_num" style="color: #CF2D28;">0</font>&nbsp;个</li>
+				</div>
+				<div id="inp">
+					<a href="#pict" id="xs"><button>楼房录入</button></a>
+					<a href="#menpailuru"><button style="left: 3px;">门牌号录入</button></a>
+					<a href="#longcun"><button style="float: right;">农村录入</button></a>
+				</div>
+			</header>
+			<div id="contont" class="mui-scroll-wrapper" style="position:relative;top:120px;">
+					<ol class="mui-scroll" id="ull" style="box-shadow: none;">
+						
+					</ol>
+			</div>
+		
+			<nav id="div2" style="position:absolute;height: 50px;bottom:117px;width:94%;"> 
+				<button id="but1" style="background-clip: padding-box !important;">清空列表</button>	
+				<button id="but2" style="float: right; background-clip: padding-box !important;" />提交用户信息</button>
+			</nav>
+		</div>
+		<!--<div id="divv"class="mui-bar mui-bar-tab" style="bottom:0px;box-shadow: none;background: white;width:94%;margin: auto;">
+				<button id="divv1" onclick="qk()" style="background-clip: padding-box !important;">清空列表</button>	
+				<button onclick="tj()" style="float: right; background-clip: padding-box !important;" />提交用户信息</button>
+		</div>-->
+		<div id="pict" style="position:absolute; top:0px !important;width:100%;height: 320px !important;z-index: 100;" class="mui-popover-action">
+			<table style="width:80%;height:310px;margin: auto;">
+				<tr bgcolor="brown" style="text-align: center;color: white;"><td>请输入住户信息</td></tr>
+				<tr bgcolor="#FAFAFA">
+					<td style="display: block; width:90%;margin: auto;position: relative;">
+						<table id="tab1" style="position: relative;top: 10px;">
+							<tr >
+								<td colspan="2">小区名:<input type="text" style="width:200px;"></td>
+							</tr>
+							<tr>
+								<td>院&nbsp;&nbsp;&nbsp;&nbsp;号:<input type="text" style="width:60px;"></td>
+								<td>楼&nbsp;&nbsp;&nbsp;&nbsp;号:<input type="text" style="width:60px;"></td>
+							</tr>
+							<tr>
+								<td>单元号<input type="text" style="width:60px;"></td>
+								<td>楼层数<input type="text" style="width:60px;"></td>
+							</tr>
+							<tr>
+								<td colspan="2">层户数<input type="text" style="width:200px;"></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr bgcolor="#CCCCCC">
+					<td style="display: block;width:90%;margin: auto;top:5px;position: relative;">
+				 		<button style="height: 40px;width:100px;" onclick="qud(1)"/>确定</button>
+						<a id='gb' href="#pict" style="color:#555555;width:100px;float: right;background: #EFEFF4;display: block;height: 40px;text-align: center;line-height: 40px;"><b>取消</b></a>
+					</td>
+				</tr>
+			</table>
+			
+		</div> 
+		<div id="menpailuru" style="position:absolute; top:50px !important;" class="mui-popover mui-popover-action">
+			<table style="width:87%;height:190px;margin: auto;">
+				<tr bgcolor="brown" style="text-align: center;color: white;"><td>请输入住户信息</td></tr>
+				<tr bgcolor="#FAFAFA">
+					<td style="display: block;width:100%;margin: auto;position: relative;left:15px;top:5px;">
+						<table >
+							<tr><td colspan="4" height="50px">街道名:<input type="text" style="position:absolute; width:160px;height: 30px !important;left:88px;top:10px;"/></td></tr>
+							<tr><td>开始编号：</td><td><input type="text" style="position: relative; width:60px;height: 30px !important;top: 10px !important;"/></td><td>结束编号</td><td><input type="text" style="position: relative; width:60px;height: 30px !important;top: 10px !important;"/></td></tr>
+						</table>
+						<!--<font style="display: block; border: 1px solid;height: 30px !important;">街道名&nbsp;&nbsp;&nbsp;：<input type="text" style="width:160px;height: 30px !important;"/></font><br />
+						<font>开始编号：<input type="text" style="width:60px;height: 30px !important;"/> 结束编号：<input type="text" style="width:60px;height: 30px !important;"/></font>-->
+					</td>
+				</tr>
+				<tr bgcolor="#CCCCCC">
+					<td style="display: block;width:80%;margin: auto;top:5px;position: relative;">
+				 		<button style="height: 40px;width:100px;" onclick="qud(2)"/>确定</button>
+						<a href="#menpailuru" style="color:#555555;width:100px;float: right;background: #EFEFF4;display: block;height: 40px;text-align: center;line-height: 40px;"><b>取消</b></a>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+		<div id="longcun" style="position:absolute; top:50px !important;" class="mui-popover mui-popover-action">
+			<table style="width:84%;height:190px;margin: auto;">
+				<tr bgcolor="brown" style="text-align: center;color: white;"><td>请输入住户信息</td></tr>
+				<tr bgcolor="#FAFAFA">
+					<td style=" width:90%;margin: auto;position: relative;left:15px;top: 10px;">
+						<font>村名&nbsp;&nbsp;&nbsp;：<input type="text" style="width:160px;height: 30px !important;"/></font><br />
+						<font>开始编号：<input type="text" id="ks" style="width:60px;height: 30px !important;"/> 结束编号：<input type="text" id="js" style="width:60px;height: 30px !important;"/></font>
+					</td>
+				</tr>
+				<tr bgcolor="#CCCCCC">
+					<td style="display: block;width:80%;margin: auto;top:5px;position: relative;">
+				 		<button style="height: 40px;width:100px;" onclick="qud(3)"/>确定</button>
+						<a href="#longcun" style="color:#555555;width:100px;float: right;background: #EFEFF4;display: block;height: 40px;text-align: center;line-height: 40px;"><b>取消</b></a>
+					</td>
+				</tr>
+			</table>
+			
+		</div>
+	</body>
+	<script type="text/javascript"src="js/yangben.js"></script>
+	<script type="text/javascript">
+	mui('#contont').scroll();
+	var inp=document.getElementsByTagName('input');
+	var residentInfo=[],n=0,jshu=[];
+	var type,yuanhao,louhao,danyuanhao,loucengshu,startCode,endCode,commiteeName
+	var xiaoqu,task,foo;
+	mui.plusReady(function(){
+		foo = plus.storage.getItem('token');
+		task=plus.storage.getItem('account');
+		xiaoqu=plus.webview.currentWebview().xiaoq;
+		document.getElementById('neir').innerHTML=xiaoqu;
+	})
+	function qud(a){
+		switch(a){
+			case 1:
+			a1();
+			break;
+			case 2:
+			a2();
+			break;
+			case 3:
+			a3();
+			break;
+		}
+	}
+	function a1(){
+		var ret='';
+		for(var i=0;i<inp.length-6;i++){
+//			alert(inp[i].value)
+			if(i>1){
+				var a=parseInt(inp[i].value)
+				if(a<1||a%1!=0){
+					plus.nativeUI.toast('信息输入有误，请输入大于0的楼号，单元号，楼层数，层户数');
+					ret='';
+					break;
+				}
+				else {
+					ret='ture'
+				}
+			}else if(i>0){
+				var a=parseInt(inp[i].value)
+				if(a<0||a%1!=0){
+					plus.nativeUI.toast('院号不能为空或小于0')
+				}
+				else{
+					ret='ture'
+				}
+			}
+		}
+		if(ret=='ture'){
+			if(n>0){
+				var len=residentInfo.length,num;
+				for(var i=0;i<len;i++){
+					var a=residentInfo[i].commiteeName;
+					var b=residentInfo[i].yuanhao;
+					var c=residentInfo[i].louhao;
+					var d=residentInfo[i].danyuanhao;
+					if(inp[0].value==a&&inp[1].value==b&&inp[2].value==c&&inp[3].value==d){
+						plus.nativeUI.toast('已存在相同院号、楼号、单元号信息');
+						num=false;
+						break;
+					}else {
+						num=true
+					}
+				}
+				if(num){
+					dy();
+				}
+			}else{
+				dy();
+			}
+		}
+	}
+	function a2(){
+		var ret='';
+		for(var i=6;i<inp.length-3;i++){        //对街道录入进行判断 
+//			alert(inp[i].value)
+			if(i>6){
+				var a=parseInt(inp[i].value)
+				if(a<1||a%1!=0){
+					plus.nativeUI.toast('编号不能为空或者小于0');
+					ret='';
+					break;
+				}
+				else {
+					ret='ture'
+				}
+			}else{
+				var a=inp[i].value
+				if(a==''){
+					plus.nativeUI.toast('街道号不能为空') 
+				}
+				else{
+					ret='ture'
+				}
+			}
+		}
+		if(ret=='ture'){
+			if(inp[7].value==inp[8].value||inp[8].value<inp[7].value){   //判断输入信息
+//				alert(startCode+''+endCode+'<br>'+inp[7].value+inp[7].value)
+				plus.nativeUI.toast('开始结束编码不能相同且结束不能小于开始')
+			}else{
+				if(n>0){
+					var len=residentInfo.length,num;
+					for(var i=0;i<len;i++){
+						var a=residentInfo[i].commiteeName;
+						var b=residentInfo[i].startCode;
+						var c=residentInfo[i].endCode;
+						if(inp[6].value==a&&inp[7].value==b&&inp[8].value==c){
+							plus.nativeUI.toast('输入信息重复或已存在')
+							num=false;
+							break;
+						}else {
+							num=true
+						}
+					}
+					if(num){
+						dy1()
+					}
+				}else{
+					dy1();
+				}
+			}
+			
+		}
+	}
+	function a3(){
+		alert('3')
+	}
+	function dy1(){
+			type=2;
+			yuanhao=0;
+			louhao=0;
+			danyuanhao=0;
+			loucengshu=0;
+			cenghus=0;
+			endCode=inp[8].value;
+			startCode=inp[7].value;
+			commiteeName=inp[6].value;
+			residentInfo[n]={"endCode":endCode,"startCode":startCode,"louhao":louhao,"cenghushu":cenghus,"loucengshu":loucengshu,"danyuanhao":danyuanhao,"commiteeName":commiteeName,"type":type,"yuanhao":yuanhao}
+			var li=document.createElement('li');
+			li.id=n;
+			li.innerHTML='<h4 >'+commiteeName+'<button ">删除</button></h4><p ><p >开始编号：  '+startCode+'  结束编号： '+endCode+'</p></p></br>'
+			document.getElementById('ull').appendChild(li);
+			var m=document.getElementById('neir_num').innerHTML;
+			endCode=parseInt(endCode);
+			startCode=parseInt(startCode)
+			document.getElementById('neir_num').innerHTML=parseInt(m)+endCode-startCode;
+			var m=endCode-startCode;
+			jshu[n]={"a":m,"b":1}
+			n++;
+	}
+	function dy(){
+			type=1;
+			//alert(n)
+			yuanhao=parseInt(inp[1].value);     //获取录入信息对信息进行转换字符
+			louhao=parseInt(inp[2].value);
+			danyuanhao=parseInt(inp[3].value);
+			loucengshu=parseInt(inp[4].value);
+			cenghus=parseInt(inp[5].value);
+			endCode=1;
+			startCode=1;
+			commiteeName=inp[0].value;
+			residentInfo[n]={"endCode":endCode,"startCode":startCode,"louhao":louhao,"cenghushu":cenghus,"loucengshu":loucengshu,"danyuanhao":danyuanhao,"commiteeName":commiteeName,"type":type,"yuanhao":yuanhao}
+			var li=document.createElement('li');
+			li.id=n;
+			li.innerHTML='<h4 >'+commiteeName+'<button ">删除</button></h4><p ><p >院号：  '+yuanhao+'  楼号： '+louhao+'  单元号：   '+danyuanhao+'</p><p >楼层数：  '+loucengshu+'   层户数：'+cenghus+'</p></p></br>'
+//			li.innerHTML='<h4 >'+(n+1)+'.'+commiteeName+'<button>删除</button></h4><p ><p >院号：  '+yuanhao+'楼号： '+louhao+'单元号：   '+danyuanhao+'</p>楼层数：  '+loucengshu+'层户数：'+cenghus+'<p >'+xx+'</p></p></br>'
+			document.getElementById('ull').appendChild(li);
+			var m=document.getElementById('neir_num').innerHTML;
+			document.getElementById('neir_num').innerHTML=parseInt(m)+loucengshu*cenghus;
+			jshu[n]={"a":loucengshu,"b":cenghus}      //每次打印完进行计算录入个数
+			n++;
+	} 
+	//点击事件获取自身，再得到父标签进行删除节点
+	mui.plusReady(function(){
+	document.getElementById('xs').addEventListener('tap',function(){
+		document.getElementById('pict').style.display='block'   //控制楼房录入框的显示隐藏
+	})
+	document.getElementById('gb').addEventListener('tap',function(){
+		document.getElementById('pict').style.display='none'
+	})
+	document.getElementById('but1').addEventListener('tap',function(){
+		var t=document.getElementById('ull').children;
+		var j=t.length;				//获取ol标签下的li标签长度
+		for(var i=0;i<j;i++){
+			var li=t[0];
+//			alert(li)
+			document.getElementById('ull').removeChild(li);   //遍历li节点进行清空
+		}
+		document.getElementById('neir_num').innerHTML=0;
+		for(var i=0;i<jshu.length;i++){ 
+			jshu[i].a='';
+			jshu[i].b='';
+		}
+		residentInfo=[];n=0;
+	})
+	document.getElementById('but2').addEventListener('tap',function(){
+			var c=residentInfo.length;
+			var sz=[],a=0;
+			for(var i=0;i<c;i++){
+				if(residentInfo[i]==''){
+					
+				}else{
+					sz[a]=residentInfo[i];
+					a++;
+				}
+			}
+			residentInfo=sz;
+			if(residentInfo[0]==null){
+				residentInfo=[];
+			}
+			alert(JSON.stringify(residentInfo))
+			//alert(task)
+					var dataO = {taskId:task,residentInfo:JSON.stringify(residentInfo)}; //提交字符串；
+					mui.ajax('http://139.196.196.64:8080/edsm/service/submitResidentInfo',
+					{
+					type:'post',//请求方式。post /get
+					data:dataO,  //如果使用post，向服务器传递参数，使用data属性，可以是一个json，可以是字符串
+					headers:{
+							token:foo
+					},
+					dataType:'json',//服务器返回给我们的参数的类型
+					success:function(data){
+//						plus.nativeUI.toast(JSON.stringify(data))
+						if(data.result==1){
+							plus.nativeUI.toast('录入成功');
+						}
+						else{
+							plus.nativeUI.toast(data.msg)
+						}
+					},//请求服务器成功之后的回调函数
+					error:function(xhr,type,e){//请求服务器失败之后的回调函数 
+						alert('请求失败'+xhr.status+"--"+type+"--"+e);
+					}
+				}) 
+	})
+	}) 
+	mui('#ull').on('tap','button',function(){
+		ob=this;
+		var h4=ob.parentElement; //得到它的父节点
+		var li=h4.parentElement;
+		var i=li.id;
+		residentInfo.splice(i,1,'');
+		jshu.splice(i,1,'')
+		document.getElementById('ull').removeChild(li); //删除父标签
+		jis()
+	})
+	function jis(){
+		var nei=0;
+		var c=jshu.length;
+		if(jshu==''||jshu==null){
+			document.getElementById('neir_num').innerHTML=nei
+		}else{
+			for(var i=0;i<c;i++){
+				if(jshu[i]==''){
+					
+				}else{
+					nei+=jshu[i].a*jshu[i].b
+				}
+			}
+			if(nei==0){
+				n=0;
+			}
+			document.getElementById('neir_num').innerHTML=nei;
+		}
+	}
+	
+	</script>
+</html>

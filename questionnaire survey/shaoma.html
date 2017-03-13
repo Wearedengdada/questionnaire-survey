@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">个人中心</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<img src="img/sm.png" style="position: relative; width:100%; top:50px;"/>
+	</body>
+		<script type="text/javascript">
+			document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+		</script>
+</html>

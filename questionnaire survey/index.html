@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+		body{
+			background: #F9F9F9;
+		}
+		#img{
+			position: relative;
+			top:100px;
+			width:100%;
+		}
+		#img img{
+			display: block;
+			width:200px;
+			margin: auto;
+		}
+		form{
+			position:relative;
+			width: 100%;
+			top:160px;
+		}
+		form div{
+			border: 1px solid #C8C7CC;
+			background:white !important; 
+			background-clip: padding-box !important;
+			border-radius:30px;
+			height: 40px;
+			width: 80%;
+			margin: auto;
+			background: #FFFFFF;
+		}
+		form div input{
+			border: none !important;
+		}
+		#sub{
+			display: block;
+			border: 1px solid;
+			background: #CF2D28 !important; 
+			background-clip: padding-box !important;
+			border-radius:30px;
+			
+			height: 40px;
+			width: 80%;
+			margin: auto;
+			top:50px;
+			
+		}
+		</style>
+	<body>
+		<header class="mui-bar mui-bar-nav" style="height:45px;background: #CF2D28 !important;">
+				<h1 class="mui-title" style="color: white;">问卷调查</h1>
+		</header>
+		<div>
+			<div id="img">
+				<img src="img/denglu/logo.png"/>
+			</div>
+			<form  onsubmit="return false">
+				<div class="mui-input-row" >
+					<img style="position: relative;height:20px;width:20px;left:12px;top:10px;float: left;" src="img/denglu/login_user_icon.png">
+					<input type="text" name="name" id="name" class="mui-input-clear" placeholder="用户名" style="position:absolute; width:200px;left:33px;">
+				</div>
+				<div class="mui-input-row mui-password" style="top: 20px;">
+					<img style="position: relative;height:20px;width:20px;left:12px;top:10px;float: left;" src="img/denglu/login_locked_icon.png">
+					<input  type="password" name="password" id="password" class="mui-input-password" placeholder="密码" style="position:absolute; width:200px;left:33px;">
+				</div>	
+				<input type="submit" id="sub" value="登录" /> 
+			</form>
+		</div>
+	</body>
+	<script type="text/javascript" src="js/denglu.js"></script>
+
+</html>

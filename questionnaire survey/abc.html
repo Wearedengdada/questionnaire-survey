@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<link rel="stylesheet" href="css/mui.css">
+	</head>
+		<style type="text/css">
+			body,html{
+				height: 100%;
+				background: white;
+			}
+			p{
+				font-size: 18px;
+			}
+			#div{
+				height:100%;
+			}
+			#ull{
+				width: 94%;
+				min-height:100%; 
+				margin: auto;
+				margin-top: 20px !important;
+			}
+		</style>
+	<body>
+		<div id="div" style="position: relative;">
+			<ol  id="ull">
+			</ol>
+		</div>
+		<!--下拉刷新容器-->
+		<script src="js/mui.min.js"></script>
+		<script>
+			var task,foo,dat;
+			mui.plusReady(function(){
+				task=plus.storage.getItem('account');
+				//alert(task) 
+				foo=plus.storage.getItem('token'); 
+			})
+			mui.init({
+				pullRefresh: {
+					container: '#div',
+					down: {
+						contentrefresh: '正在刷新...',
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			function pulldownRefresh() {
+				setTimeout(function() {
+					var wv=plus.webview.currentWebview();
+					wv.reload()
+				}, 1500);
+			}
+			var count = 1;
+			function pullupRefresh() {
+				setTimeout(function() {
+					var foo = plus.storage.getItem('token');
+					//					alert(foo)
+					mui.ajax('http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=20&page='+count+'&taskId='+task+'state=0',
+					{  
+						type:"get",
+						dataType:"json",
+						headers:{ 
+							token:foo
+						},
+						success:function(data){ 
+							if(data.result==1){
+								dy(data)
+							}
+						},
+						error:function(){
+							alert("访问失败")
+						}
+					})
+					count++;
+//					mui('#div').pullRefresh().endPullupToRefresh((++count >2)); //参数为true代表没有更多数据了。
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#div').pullRefresh().pullupLoading();  //页面加载1秒后自动下拉刷新
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#div').pullRefresh().pullupLoading();
+				});
+			}
+			function dy(data){
+//			alert(data.pageSize)
+			if(data.result==1){
+				var sample=data.sampleList;
+	//			alert(JSON.stringify(data));
+				for(var i=0;i<sample.length;i++){
+					var m=data.sampleList[i];
+					if(count>2){        //判断当前页面如果进行了下拉刷新就会得到多个data然后将它们合并
+						dat.sampleList[20+i]=m
+					}else{
+						dat=data;
+					}
+						var name=sample[i].residentName;
+						var bm='住户编码：'+sample[i].residentCode;
+						var xx='住户信息：'+sample[i].residentDetail;
+						var yangben=sample[i].sampleId;
+						var li=document.createElement('li');
+					if(count>2){	
+						li.id=20+i;
+					}else{
+						li.id=i;
+					}
+						li.innerHTML='<h4 >'+name+'</h4><p ><p >'+bm+'</p><p >'+xx+'</p></p></br>'
+						document.getElementById('ull').appendChild(li);
+					}
+			}else{
+				alert(data.msg)
+			}
+			if(sample.length<count) {
+					mui('#div').pullRefresh().endPullupToRefresh(true);
+				} else {
+					mui('#div').pullRefresh().endPullupToRefresh(false)
+				}
+		}
+		mui('#ull').on('tap','li',function(){
+			
+//			alert(JSON.stringify(dat))
+			var i=this.getAttribute('id');
+//			alert(i)
+			i=parseInt(i)
+			var ybid=dat.sampleList[i].sampleId;
+			var bh=dat.sampleList[i].residentCode
+			ybid=ybid+''
+			plus.storage.setItem('ybbh',bh);
+			plus.storage.setItem('dqybid',ybid);
+			var a=plus.storage.getItem('dqybid')
+//			alert(a)
+			if(bh!=""||bh!=null){
+				var wv=plus.webview.currentWebview();
+				var wv1=wv.opener()
+				wv1.evalJS('gb()'); 
+				wv.close()
+			}
+		})
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+	<style type="text/css">
+		div {
+			width: 90%;
+			margin: auto;
+			position: relative;
+			top:50px;
+		}
+		
+		#sq {
+			color: #B6B6B6;
+		}
+		
+		#dz {
+			color: #B6B6B6;
+		}
+		
+		table {
+			width: 100%;
+		}
+	</style>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">选择调查任务</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="div" class="mui-content" >
+
+		</div>
+	</body>
+	<script type="text/javascript">
+		mui.init();
+		var type, sur, neirong,dat;
+		mui.plusReady(function() {
+			document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+			var foo = plus.storage.getItem('token');
+			sur = plus.webview.currentWebview().sure;
+//			alert(sur) 
+			mui.ajax('http://139.196.196.64:8080/edsm/service/getUserTaskList?pageSize=10&page=1&surveyId=' + sur, {
+				type: "get",
+				dataType: "json",
+				headers: {
+					token: foo
+				},
+				success: function(data) {
+					if(data.result == 1) {
+						dat=data;
+						if(data.taskList[0] == undefined) {
+							var taske = ''
+							plus.storage.setItem('account', taske);
+							var n = plus.storage.getItem('account');
+							//如果获取的值为空
+						} else {
+							var c=data.taskList.length;
+							for(var i=0;i<c;i++){
+								neirong = data.taskList[i].committee;
+								var taske = data.taskList[i].taskId;
+								var n = plus.storage.getItem('account');
+								var tab = document.createElement('table');
+								tab.taskId=taske;
+								var mc = data.taskList[i].committee;
+								var dz = data.taskList[i].province + data.taskList[0].city + data.taskList[0].district + data.taskList[0].street
+								tab.innerHTML = '<table><tr><td>名称：</td><td id="sq">' + mc + '</td></tr><tr><td>地址：</td><td id="dz">' + dz + '</td></tr><tr><td colspan="2"><a style="position: relative; color:#CF2D28;float: right;top: 10px;">查看样本></a></td></tr></table>'
+								document.getElementById('div').appendChild(tab)
+							}
+						}
+					} else {
+						alert(data.msg)
+					}
+
+				},
+				error: function() {
+					alert("访问失败")
+				}
+			})
+			mui('#div').on('tap', 'table', function() {
+				var taske=this.taskId;
+				taske=taske+'';
+				plus.storage.setItem('account', taske);
+				mui.openWindow({
+					url: 'xuanyang.html',
+					id: 'xuangyang',
+					show: {
+						autoshow: true,
+						duration: 600
+					}
+				});
+			})
+		})
+		function tx(){
+//			alert('ee')
+			var wv=plus.webview.currentWebview();
+			var wv1=wv.opener()
+			wv1.evalJS('tx()'); 
+//			wv.close()
+		}
+	</script>
+
+</html>

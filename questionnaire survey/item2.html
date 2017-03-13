@@ -1,0 +1,220 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+		html,body{
+			height: 100%;
+		}
+			#head{
+				height:60px;
+				background: #D8D8D8;
+				/*line-height:24px;*/
+			}
+			#head li{list-style-type: none;
+				position: relative;
+				width: 92%; 
+				line-height:25px;
+				margin: auto;
+				top:6px;
+				
+				font-size: 17px;
+				color: #000000;
+			}
+			font{
+				color:#CF2D28;
+			}
+			#contont{
+				background: white !important;
+			}
+			#ull{
+				width: 94% !important;
+				margin: auto;
+			}
+			#conctent li{
+				width:90%  !important;
+				min-height: 600px;
+				top:10px;
+			}
+			p{	
+				display: block;
+				position: relative;
+				left: 10px;
+				font-size: 16px;
+				top: 0px;
+			}
+			input{
+				height: 40px;
+				background: #CF2D28 !important;
+				background-clip: padding-box !important;
+				color: white !important;
+				width:100%;
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div id="head">
+				<li><img src="img/point_icon.png" style="width:7px;"/>
+					<span>
+						全国已完成&nbsp;<font id="zs">1005</font>&nbsp;份调查
+					</span>
+				</li>
+				<li><img src="img/point_icon.png" style="width:7px;"/>
+					<span>
+						湖南省已完成&nbsp;<font id="wc">1</font>&nbsp;份调查
+					</span> 
+				</li> 
+		</div> 
+		<div id="contont" class="mui-scroll-wrapper" style="position:relative;height:80%;background: #F9F9F9;padding-bottom:50px;">
+			<ol class="mui-scroll" id="ull"  style="min-height:100%;">
+				
+			</ol>
+		</div>
+		
+	</body>
+	<script type="text/javascript">
+		var type,sur,til,mm,answ,wjzp='',foo,dat;
+		mui('#contont').scroll();
+		mui.plusReady(function(){
+			foo = plus.storage.getItem('token');
+			type= plus.webview.currentWebview().json_type;
+			sur= plus.webview.currentWebview().sure;
+			til=plus.webview.currentWebview().tile
+			var provn=type.user.province;
+//			alert(til)
+			var dataO = {surveyId:sur,provinceName:provn}; 
+					mui.ajax('http://139.196.196.64:8080/edsm/service/getSurveyFinishCount',
+					{
+					type:'post',//请求方式。post /get
+					data:dataO,  //如果使用post，向服务器传递参数，使用data属性，可以是一个json，可以是字符串
+					headers:{
+			 				token:foo
+						},
+					contentLength:dataO.length,//如果使用post请求，传递参数的长度
+					dataType:'json',//服务器返回给我们的参数的类型
+					success:function(data){
+						if(data.result==1){
+							document.getElementById('zs').innerHTML=data.countryCount;
+							document.getElementById('wc').innerHTML=data.provinceCount;
+							dy();
+						}
+						else{
+							plus.nativeUI.toast(data.msg)
+						}
+			 		},//请求服务器成功之后的回调函数
+					error:function(xhr,type,e){//请求服务器失败之后的回调函数 
+						alert('请求失败'+xhr.status+"--"+type+"--"+e);
+					}
+				}) 
+		})
+		function dy(){
+			var Znam=type.user.userName;
+			mm=plus.storage.getItem('neir')
+			mm=eval("("+mm+")"); //转换成数组
+			c=mm.length;
+			dat=mm
+			alert(mm[0])
+			for(var i=0;i<c;i++){
+				if(mm[i]==''||mm[i]==null){
+					plus.nativeUI.toast('参数为空')
+				}else{
+				var nam=mm[i].realName;
+				var username=mm[i].userName;
+				var dz=mm[i].phoneLocation;
+				var phone=mm[i].phoneNum;
+				var startTime=mm[i].startTime;
+				var endTime=mm[i].endTime
+				var li=document.createElement('li');
+				li.id=i;
+//				li.innerHTML='<h4 >'+(i+1)+til+'</h4><p ><p >'+'开始时间:'+startTime+'</p><p >'+'结束时间:'+endTime+'</p><p >'+'户主姓名:'+nam+'</p><p >'+'家庭住址:'+dz+'</p><p >'+'联系电话:'+phone+'</p></p></br>'
+				li.innerHTML='<h4 >'+til+'</h4><p ><p >'+'开始时间:'+startTime+'</p><p >'+'结束时间:'+endTime+'</p><p >'+'户主姓名:'+nam+'</p><p >'+'家庭住址:'+dz+'</p><p >'+'联系电话:'+phone+'</p></p><input type="button" value="问卷拍照"><input type="button" value="上传照片和录音"></br>'
+//				alert(li.innerHTML)
+				if(sur==mm[i].surveyId&&Znam==username){
+					document.getElementById('ull').appendChild(li);
+				}
+				}
+			}
+		} 
+		var i
+		mui('#ull').on('tap','input',function(){
+			var li=this.parentElement;
+			if(this.value=='问卷拍照'){
+				i=li.id;
+				pz();
+			}else{
+				if(wjzp!=''&&wjzp!=null&&li.id==i){
+						answ=dat[i].answ
+						alert(answ)
+					abc();
+				}else{
+					alert('还未进行问卷拍照');
+				}
+			}
+		})
+		function pz(){
+			var cmr= plus.camera.getCamera( 0);   //获取摄像头管理对象
+			var res=cmr.supportedImageResolutions[0];//获取摄像头像素
+			var fmt=cmr.supportedImageFormats[0];//获取摄像头的拍照格式
+			cmr.captureImage(						//进行拍照操作  cmr.startVideoCapture( successCB, errorCB, option );进行摄像操作
+				function(path){
+//				alert(path)	//拍照成功返回参数	path照片保存路径
+				plus.io.resolveLocalFileSystemURL( path,function(even){   //通过URL参数获取目录对象或文件对象
+					var fil=even.fullPath;								//even获取的路径
+					alert(fil);
+					var wv=plus.webview.currentWebview().opener()
+					plus.storage.setItem('wjzp',fil);
+					wjzp=plus.storage.getItem('wjzp');
+					},
+					function(e){ //获取路径失败返回参数}
+						alert(e.message)
+					})
+				},
+				function(error_){
+					alert(error_)
+							//拍照失败返回参数
+				}, 
+				{
+					filename:'_doc/', 
+					format:fmt ,
+					resolution:res
+					//设置文件格式，路径，像素，这是一个Json对象
+				}
+				);
+		}
+		function abc(){
+			alert(wjzp+'-'+answ)
+			var task = plus.uploader.createUpload("http://139.196.196.64:8080/edsm/service/uploadAnswerFile", 
+	 			{
+					method: "POST",
+					blocksize: 204800,
+					priority: 100
+				},
+				function(t, status) {
+					// 上传完成;
+					plus.nativeUI.toast(t.uploadedSize+'/'+t.totalSize)
+					if(status == 200) {
+						plus.nativeUI.toast("照片上传成功: " + t.url+t.responseText);
+						
+					} else {
+						plus.nativeUI.toast("上传失败: " + status);
+					}
+				}
+			);
+			alert(sur)
+			task.addFile(wjzp, {key: "answerFile"});
+			task.addData("surveyId",sur+'');
+			task.addData("answerId",answ+'');
+			task.addData("type",'1');
+			task.setRequestHeader("token",foo);//添加请求头---这4个参数只是文档需求，自己看情况是否需要添加上传参数
+			task.start();
+		}
+	</script>
+</html>

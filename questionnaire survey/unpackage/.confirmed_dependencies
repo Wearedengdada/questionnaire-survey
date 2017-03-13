@@ -1,0 +1,211 @@
+{
+	"index.html": {
+		"resources": [
+			"img/denglu/login_user_icon.png",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"img/denglu/login_locked_icon.png",
+			"img/denglu/logo.png",
+			"index.html",
+			"js/shouye.js",
+			"js/denglu.js"
+		],
+		"refer": [
+			"index.html",
+			"zhuye.html"
+		]
+	},
+	"zhuye.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"img/denglu/login_user_icon.png",
+			"yonghu.html",
+			"img/diaocha/demo_pic.png",
+			"js/zhuye.js"
+		],
+		"refer": [
+			"yonghu.html",
+			"diaochaxuanxiang.html"
+		]
+	},
+	"yonghu.html": {
+		"resources": [
+			"zhuye.html",
+			"img/denglu/login_user_icon.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/geren/*�-�.png",
+			"img/geren/return_btn.png",
+			"img/geren/person_default_photo.png",
+			"fonts/mui.ttf",
+			"img/geren/person_bg.png",
+			"img/geren/person_quit_icon.png",
+			"img/denglu/login_locked_icon.png",
+			"xiugaimima.html"
+		],
+		"refer": [
+			"zhuye.html",
+			"xiugaimima.html",
+			"index.html"
+		]
+	},
+	"xiugaimima.html": {
+		"resources": [
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/denglu/login_locked_icon.png"
+		],
+		"refer": []
+	},
+	"diaochaxuanxiang.html": {
+		"resources": [
+			"img/geren/return_btn.png",
+			"img/tab_line.png",
+			"item1.html",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"item3.html"
+		],
+		"refer": [
+			"item3.html",
+			"item2.html",
+			"item1.html"
+		]
+	},
+	"item2.html": {
+		"resources": [
+			"img/point_icon.png",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"item1.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"dati.html"
+		]
+	},
+	"dati.html": {
+		"resources": [
+			"img/denglu/login_user_icon.png",
+			"fonts/mui.ttf",
+			"img/denglu/login_locked_icon.png",
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/dati.js",
+			"img/mobile_icon.png"
+		],
+		"refer": [
+			"shaoma.html",
+			"diaochayangben.html",
+			"paizhao.html",
+			"xuanze.html"
+		]
+	},
+	"item3.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"yangben.html"
+		]
+	},
+	"shaoma.html": {
+		"resources": [
+			"img/k\u0001s�_\u000b��.png",
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"img/sm.png",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"yangben.html": {
+		"resources": [
+			"luru.html",
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"img/tab_line.png",
+			"chakan.html",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"chakan.html",
+			"luru.html"
+		]
+	},
+	"chakan.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"js/yangben.js"
+		],
+		"refer": []
+	},
+	"diaochayangben.html": {
+		"resources": [
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"luru.html": {
+		"resources": [
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"paizhao.html": {
+		"resources": [
+			"img/default_icon.png",
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": []
+	},
+	"xuanze.html": {
+		"resources": [
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css"
+		],
+		"refer": [
+			"yangben.html",
+			"diaochayangben.html",
+			"xuanyang.html"
+		]
+	},
+	"xuanyang.html": {
+		"resources": [
+			"abc.html",
+			"img/geren/return_btn.png",
+			"js/mui.min.js",
+			"css/mui.min.css",
+			"fonts/mui.ttf"
+		],
+		"refer": [
+			"abc.html"
+		]
+	},
+	"abc.html": {
+		"resources": [
+			"css/mui.css",
+			"js/mui.min.js"
+		],
+		"refer": []
+	}
+}

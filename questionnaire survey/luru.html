@@ -1,0 +1,253 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+			body,html{
+				height:100%;
+				background: white;
+			}
+			p{
+				font-size: 18px;
+			}
+			#div{
+				min-height:100%;
+				margin-bottom:70px; 
+			}
+			#ull{
+				width: 94%; 
+				margin: auto;
+				min-height:90%;
+			}
+			li{
+				position: relative;
+				top: 10px;
+			}
+			p{
+				width: 92%;
+				margin: auto;
+			}
+			li button{
+				width:96px;
+				height:30px;
+				float: right;
+				border-radius:5px;
+				background-clip: padding-box !important;
+				background:#DD524D;
+				color: white; 
+			}
+			input{
+				top: 10px;
+				height: 40px;
+				background-clip: padding-box !important
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<div id="div" >
+			<ul class="mui-table-view" id="ull">
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var stat={0:'未完成',1:'已完成',2:'未联系上',3:'被拒绝',4:'无此住户'};
+		var task,foo,sampleid;
+		mui.plusReady(function(){
+			
+		})
+		mui.init({
+				pullRefresh: {
+					container: '#div',
+					down: {
+						contentrefresh: '正在刷新...',
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+		var count = 1;
+		function pullupRefresh() {
+			setTimeout(function() {
+				task=plus.storage.getItem('account'); 
+				foo=plus.storage.getItem('token'); 
+				mui.ajax('http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=20&page='+count+'&taskId='+task+'state=0',
+				{  
+					type:"get",
+					dataType:"json",
+					headers:{ 
+						token:foo
+					},
+					success:function(data){ 
+						if(data.result==1){
+							dy(data);
+						}
+					},
+					error:function(){
+						alert("访问失败")
+					}
+				})
+				count++;
+//				mui('#div').pullRefresh().endPullupToRefresh((++count >2)); //参数为true代表没有更多数据了。
+			}, 1500);
+		}
+		if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#div').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#div').pullRefresh().pullupLoading();
+				});
+			}
+		function dy(data){
+//			alert(data.pageSize)
+			if(data.result==1){
+			var sample=data.sampleList;
+//			alert(JSON.stringify(data));
+			for(var i=0;i<sample.length;i++){
+				if(count>2){
+					var name=(i+21)+'.'+sample[i].residentName;
+				}else{
+					var name=(i+1)+'.'+sample[i].residentName;
+				}
+					var bm='住户编码：'+sample[i].residentCode;
+					var xx='住户信息：'+sample[i].residentDetail;
+					var yangben=sample[i].sampleId;
+					var recou=sample[i].repeatCount;
+					var ir=sample[i].isResample
+					var li=document.createElement('li');
+					li.value=yangben;
+					li.id=sample[i].residentCode;
+					var state=sample[i].state
+					valu=stat[state]; 
+					if(state>2&&ir==0){ 
+						li.innerHTML='<h4 >'+name+'<button>'+valu+'</button></h4><p ><p >'+bm+'</p><p >'+xx+'</p><input type="button" id="sq" value="重新申请" style="display: block; position:relative ; width:95%;border-radius:8px;background: #DD524D;color: white;margin: auto;" /></p></br>'
+					}else if(state==2){
+						if(recou>2&&ir==0){
+							li.innerHTML='<h4 >'+name+'<button>'+valu+recou+'次'+'</button></h4><p ><p >'+bm+'</p><p >'+xx+'</p><input type="button" id="sq" value="重新申请" style="display: block; position:relative ; width:95%;border-radius:8px;background: #DD524D;color: white;margin: auto;" /></p></br>'
+						}else{
+							li.innerHTML='<h4 >'+name+'<button>'+valu+recou+'次'+'</button></h4><p ><p >'+bm+'</p><p >'+xx+'</p></p></br>'
+						}
+					}else{
+							li.innerHTML='<h4 >'+name+'<button>'+valu+'</button></h4><p ><p >'+bm+'</p><p >'+xx+'</p></p></br>'
+						}
+					document.getElementById('ull').appendChild(li);
+				}
+//			pd();
+			}else{
+				alert(data.msg)
+			}
+			if(sample.length<count) {
+					mui('#div').pullRefresh().endPullupToRefresh(true);
+				} else {
+					mui('#div').pullRefresh().endPullupToRefresh(false)
+				}
+		}
+		mui('#ull').on('tap','button',function(){
+				var h4=this.parentElement;
+				var li=h4.parentElement;
+				sampleid=li.value;
+//				alert(sampleid)
+				var iner=this.innerHTML;
+				if(iner=='已完成'){
+					
+				}else if(iner=='未完成'||iner=='未联系上1次'||iner=='未联系上2次'){
+					plus.nativeUI.actionSheet(
+					{
+						title:"修改样本状态",		//选择按钮框标题内容
+						cancel:"取消",				//取消按钮上显示的文字内容
+						buttons:[{title:"完成"},{title:"未联系"},{title:"被拒绝"},{title:"无此用户"}]	//选择框上的按钮，ActionButtonStyle对象数组，json对象；
+					},  //选择按钮框显示样式
+					function(e){
+						if(e.index>0){
+							var sta=e.index;
+							xiugai(sta,sampleid)
+						}
+					} )
+				}else{
+//					document.getElementById('p'+h).style.position='relative';
+//					document.getElementById('p'+h).style.top='10px'
+//					document.getElementById('p'+h).innerHTML='<input type="button" id="sq" value="重新申请" style="display: block; position:relative ; width:95%;border-radius: 30px;background: #DD524D;color: white;margin: auto;" />'
+				}
+		})
+		mui('#ull').on('tap','input',function(){ 
+			var p=this.parentElement;
+			sampleid=p.value;
+			alert(sampleid)
+			congx(sampleid)
+		})
+		function congx(samp){     //重新申请样本
+			alert(task)
+			mui.ajax('http://139.196.196.64:8080/edsm/service/getNewSample?sampleId='+samp+'&taskId='+task,
+			{  
+				type:"get",
+				dataType:"json",
+				headers:{ 
+					token:foo
+				},
+			success:function(data){ 
+				if(data.result==1){   //成功
+					plus.nativeUI.toast('申请成功');
+					var wn=plus.webview.currentWebview()
+					wn.reload();
+				}else{
+					plus.nativeUI.toast(data.msg)   
+				}
+				plus.nativeUI.toast(JSON.stringify(data))
+			},
+			error:function(){
+				plus.nativeUI.toast("访问失败")
+			}
+		})
+		}
+		function xiugai(sta,sampleid){
+//			alert(sampleid) 
+			mui.ajax('http://139.196.196.64:8080/edsm/service/updateSample?sampleId='+sampleid+'&taskId='+task+'&state='+sta,
+			{  
+				type:"get",
+				dataType:"json",
+				headers:{ 
+					token:foo
+				},
+			success:function(data){ 
+				if(data.result==1){
+					plus.nativeUI.toast('修改成功');
+					var wn=plus.webview.currentWebview()
+					wn.reload();
+				}else{
+					plus.nativeUI.toast(data.msg)
+				}
+				plus.nativeUI.toast(JSON.stringify(data))
+			},
+			error:function(){
+				plus.nativeUI.toast("访问失败")
+			}
+		})
+		}
+//		function pd(){
+//			var but=document.getElementsByTagName('button');
+//			var c=but.length;
+//			for(var i=0;i<c;i++){
+//				var inner=but[i].innerHTML;  //获取按钮内容
+//				if(inner!='已完成'&&inner!='未完成'){
+//					document.getElementById('p'+i).style.position='relative';
+//					document.getElementById('p'+i).style.top='10px'
+//					document.getElementById('p'+i).innerHTML='<input type="button" id="sq" value="重新申请" style="display: block; position:relative ; width:95%;border-radius:8px;background: #DD524D;color: white;margin: auto;" />'
+//				}
+//			}
+//		}
+	</script>
+</html>

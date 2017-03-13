@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+			#segmentedControl{
+				border: none;
+			}
+			h1{
+				font-size:19px !important;
+			}
+			a{
+				display: block;
+				position: relative;
+				color:#555555; 
+				width:33.3% !important;
+				height: 50px;
+				line-height: 50px;
+				font-size:19px;
+				text-align: center;
+				float: left;
+				margin: auto;
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">城镇住户生活和保障调查问卷</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="segmentedControl" class="mui-segmented-control" style="position: relative;top:60px;">
+					<div style="clear: both;"></div>
+					<a id="a1" href="item1.html" style="background: url(img/tab_line.png)right no-repeat;color: red;">调查介绍</a>
+					<a id="a2" href="item2.html" style="background: url(img/tab_line.png) right no-repeat;">调查进程</a>
+					<a id="a3" href="item3.html">调查任务</a>
+		</div>
+	</body>
+		<script type="text/javascript">
+			var	type,title,sur,tex_value;
+			var subView;
+			mui.plusReady(function(){
+				task=plus.storage.getItem('account');
+	//			alert(task) 
+				foo=plus.storage.getItem('token'); 
+			})
+			mui.init(function(){
+				preloadPages:[
+				    {
+				      url:'diaochaxuanxiang.html',
+				      id:title, 
+				      styles:{},//窗口参数
+				      extras:{},//自定义扩展参数
+				      subpages:['item1.html', 'item2.html', 'item3.html']//预加载页面的子页面
+				    }
+			    ]
+			})
+			document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+			var substyle = {  
+				top:'115px'
+			}
+			var subpages = ['item1.html','item2.html','item3.html'];
+			mui.plusReady(function(){
+				type= plus.webview.currentWebview().json_ty;
+				titl=plus.webview.currentWebview().titl;
+				sur=plus.webview.currentWebview().survery;
+				tex_value=plus.webview.currentWebview().tex_value;
+				document.getElementById('title').innerHTML=titl; 
+//				alert(titl)
+				var self = plus.webview.currentWebview();
+				for(var i=0;i<3;i++){
+						subView = plus.webview.create(subpages[i],subpages[i],
+						substyle,
+						{
+							json_type:type,
+							sure:sur,
+							text_value:tex_value,
+							tile:titl
+						}
+						);
+					if(i>0){
+						subView.hide();
+					}
+					self.append(subView);
+				}
+			})
+			var currentViewUrl = subpages[0];
+				mui('#segmentedControl').on('tap','a',function(){
+					var url_ = this.getAttribute('href');
+					plus.webview.hide(currentViewUrl);
+					plus.webview.show(url_,"slide-in-right",1000);//显示被点击的页面
+					currentViewUrl = url_;//重新复制当前页面url，是被点击的这个页面的url
+				})
+			var a=document.getElementsByTagName('a');
+			document.getElementById('a1').addEventListener('tap',function(){
+					a[0].style.color='red';
+					a[1].style.color='black'
+					a[2].style.color='black'
+			})
+			document.getElementById('a2').addEventListener('tap',function(){
+					a[0].style.color='black';
+					a[1].style.color='red';
+					a[2].style.color='black';
+			})
+			document.getElementById('a3').addEventListener('tap',function(){
+					a[0].style.color='black';
+					a[1].style.color='black';
+					a[2].style.color='red';
+			})
+			function sx(){
+//				var wb2=document.getWebviewById('item2.html')
+//				alert(wb2)
+				var wv=plus.webview.currentWebview();
+				wv.reload(true);
+			}
+		</script>
+</html>

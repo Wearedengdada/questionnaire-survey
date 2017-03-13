@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<style type="text/css">
+			body,html{
+				height: 100%;
+				background: white;
+			}
+			p{
+				font-size: 18px;
+			}
+			#ull{
+				width: 94%; 
+				margin: auto;
+				margin-top: 20px !important;
+			}
+			p{
+				width: 92%;
+				margin: auto;
+			}
+		</style>
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">选择调查样本</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="div" style="position: relative;top:35px">
+			<ul class="mui-table-view" id="ull">
+				<br />
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var task,foo;
+		document.getElementById('fanh').addEventListener('tap',function(){
+				mui.back();
+			})
+		mui.plusReady(function(){
+			task=plus.storage.getItem('account');
+//			alert(task) 
+			foo=plus.storage.getItem('token'); 
+		})
+		mui.init({
+				pullRefresh: {
+					container: '#div',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						height: 0,
+						callback: pullupRefresh
+					}
+				}
+			});
+			/**
+			 * 下拉刷新具体业务实现
+			 */
+			function pulldownRefresh() {
+				setTimeout(function() {
+					mui('#div').pullRefresh().endPulldownToRefresh(); //refresh completed
+				}, 1500);
+			}
+			var count = 1;
+			/**
+			 * 上拉加载具体业务实现
+			 */
+			function pullupRefresh() {
+				setTimeout(function() {
+					var foo = plus.storage.getItem('token');
+					//					alert(foo)
+					mui.ajax('http://139.196.196.64:8080/edsm/service/getSampleList?pageSize=20&page='+count+'&taskId='+task+'state=0',
+					{  
+						type:"get",
+						dataType:"json",
+						headers:{ 
+							token:foo
+						},
+						success:function(data){ 
+							if(data.result==1){
+								dy(data)
+							}
+						},
+						error:function(){
+							alert("访问失败")
+						}
+					})
+					mui('#div').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+				}, 1500);
+			}
+			if(mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#div').pullRefresh().pullupLoading();
+					}, 1000);
+
+				});
+			} else {
+				mui.ready(function() {
+					mui('#div').pullRefresh().pullupLoading();
+				});
+			}
+			function dy(data){
+//			alert(data.pageSize)
+			if(data.result==1){
+			var sample=data.sampleList;
+//			alert(JSON.stringify(data));
+			for(var i=0;i<sample.length;i++){
+					var name=(i+1)+'.'+sample[i].residentName;
+					var bm='住户编码：'+sample[i].residentCode;
+					var xx='住户信息：'+sample[i].residentDetail;
+					var yangben=sample[i].sampleId;
+					var li=document.createElement('li');
+					li.value=yangben;
+					li.id=sample[i].residentCode;
+					li.innerHTML='<h4 >'+name+'</h4><p ><p >'+bm+'</p><p >'+xx+'</p></p></br>'
+					document.getElementById('ull').appendChild(li);
+				}
+			}else{
+				alert(data.msg)
+			}
+		}
+		mui('#ull').on('tap','li',function(){
+			var bh=this.getAttribute('id');
+			var ybid=this.value;
+//			alert(bh)
+			ybid=ybid+''
+			plus.storage.setItem('ybbh',bh)
+			plus.storage.setItem('dqybid',ybid)
+			if(bh!=""||bh!=null){
+				var wv=plus.webview.currentWebview();
+				var wv1=wv.opener()
+				wv1.evalJS('tx()'); 
+				wv.close()
+			}
+		})
+	</script>
+</html>

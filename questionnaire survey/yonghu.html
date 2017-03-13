@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+		*{
+			font-size: 18px;
+		}
+			#div{
+				position: relative;
+				top:55px;
+			}
+			#div1{
+				height:180px;
+				background: url(img/geren/person_bg.png) no-repeat;
+				background-size: 100%;
+			}
+			#tab{
+				position: relative;
+				top:30px;
+				margin: auto;
+				color: white;
+				text-align: center;
+			}
+			ul li{
+				height:60px;
+				color: #777777 
+			}
+			a{
+				height: 60px;
+			}
+		</style>
+	<body >
+		<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">个人中心</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>
+		<div id="div">
+			<div id="div1">
+				<table id="tab" cellspacing="" cellpadding="">
+					<tr><td><img src="img/geren/person_default_photo.png" style="width:80px;"/></td></tr>
+					<tr><td id="Did">Data</td></tr>
+					<tr><td id="nam">Data</td></tr>
+				</table>
+			</div>
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell">
+			                <a class="mui-navigate-right" id="xiugai">
+			                	<img src="img/denglu/login_locked_icon.png" style=" position:relative;width:20px;top:3px;"/> 
+			                	&nbsp;&nbsp;修改密码
+			                </a>
+			    </li>
+			    <li class="mui-table-view-cell">
+			                <a href="#picture" class="mui-navigate-right" id="zhuxiao">
+			                	<img src="img/geren/person_quit_icon.png" style=" position:relative;width:20px;top:3px;"/> 
+			                	&nbsp;&nbsp;注销</a>
+			    </li>
+		   </ul>
+		
+		<div id="picture" style="position:absolute; top:150px !important;" class="mui-popover mui-popover-action mui-popover-bottom">
+			<table style="width:80%;height:250px;margin: auto;">
+				<tr bgcolor="brown" style="text-align: center;color: white;"><td>提示信息</td></tr>
+				<tr height="130px" bgcolor="#FAFAFA">
+					<td style="display: block;width:90%;margin: auto;top:60px;position: relative;">确定注销用户吗?</td>
+				</tr>
+				<tr bgcolor="#CCCCCC"><td style="display: block;width:90%;margin: auto;top:15px;position: relative;">
+						<button onclick="djj()" id="zhuxiao" style="color:black;width:100px;background: #CF2D28;color: white;"><b>确定</b></button>
+						<a href="#picture" style="color:black;width:100px;height:40px; float: right;background: #8F8F94;text-align: center;line-height: 40px;"><b>取消</b></a>
+					</td>
+				</tr>
+			</table>
+		</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var type,ck,foo,web1;
+		var Did=document.getElementById('Did');
+		var nam=document.getElementById('nam');
+		mui.plusReady(function(){
+			foo = plus.storage.getItem('token');
+			type= plus.webview.currentWebview().json_ty;
+			web1=plus.webview.currentWebview();
+			Did.innerHTML=type.user.userName;
+			nam.innerHTML=type.user.realName;
+			ck=web1;
+			//修改
+			document.getElementById('xiugai').addEventListener('tap',function(){
+				document.getElementById('title').innerHTML='修改密码'
+				mui.openWindow({
+					url:'xiugaimima.html', 
+					id:'xiug',
+					styles:{
+						top:'55px'
+					},
+					extras:{
+						json_ty:type
+					},
+					show:{
+						autoshow:true,
+						duration:700
+					} 
+				});
+			})
+			//待设置！ 目前为返回
+			document.getElementById('fanh').addEventListener('tap',function(){
+				var tit=document.getElementById('title');
+				if(tit.innerHTML=="个人中心"){
+					mui.back()
+				}else{
+					var zck=plus.webview.getWebviewById('xiug');
+//					alert(zck)
+					zck.evalJS('guanbi()')
+					document.getElementById('title').innerHTML=='个人中心'
+				}
+			})
+		})
+		function gb(){
+			document.getElementById('title').innerHTML='个人中心'
+		}
+		//注销
+		function djj(){
+//			alert(foo)
+				mui.ajax('http://139.196.196.64:8080/edsm/service/logout',{
+						type:"get",
+						dataType:"json",
+						headers:{
+							token:foo
+						},
+						success:function(data){
+							if(data.result==1){
+								var parent = web1.opener();
+								parent.evalJS('clos()');//父页面执行js代码
+								web1.close();
+								mui.openWindow({
+									url:'index.html', 
+									id:'index',
+									show:{
+										autoshow:true,
+									} 
+								});
+							}
+						},
+						error:function(){
+							alert("注销失败")
+						}
+				});
+		}
+	</script>
+</html>

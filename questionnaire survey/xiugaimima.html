@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+		</script>
+		<style type="text/css">
+		body{
+			background: white;
+		}
+		#div{
+			position:relative;
+			width:80%;
+			margin: auto;
+			top: 20px;
+			height:240px;
+		}
+		#div div{
+			border: 1px solid #C8C7CC;
+			background-clip: padding-box !important;
+			border-radius:30px;
+			height: 45px;
+			background: #FFFFFF;
+		}
+		#div input{
+			border: none !important;
+		}
+		input{
+			background-clip:padding-box  !important;
+			width: 80%;
+		}
+		</style>
+	<body>
+		<!--<header class="mui-bar mui-bar-nav" style="height:55px;background: #CF2D28 !important;color:white;">
+			<h1 id="title" class="mui-title" style="color: white;top:6px;">修改密码</h1>
+			<img id="fanh" src="img/geren/return_btn.png" style="position: relative; width:40px;top: 6px;"> 
+		</header>-->
+		<div id="div" >
+			<div class="mui-input-row" style="top: 20px;background: #FFFFFF;">
+							<img style="position: relative;height:20px;width:20px;left:12px;top:10px;float: left;" src="img/denglu/login_locked_icon.png">
+							<input  type="password" name="text" id="jiunum" placeholder="请输入旧密码" style="position:absolute; width:200px;left:33px;">
+			</div> 
+			<div class="mui-input-row" style="top:40px;background: #FFFFFF;">
+							<img style="position: relative;height:20px;width:20px;left:12px;top:10px;float: left;" src="img/denglu/login_locked_icon.png">
+							<input  type="password" name="text" id="number" placeholder="请输入新密码" style="position:absolute; width:200px;left:33px;">
+			</div>
+			<div class="mui-input-row" style="top:60px;background: #FFFFFF;">
+							<img style="position: relative;height:20px;width:20px;left:12px;top:10px;float: left;" src="img/denglu/login_locked_icon.png">
+							<input  type="text" name="text" id="number1" placeholder="请输入新密码" style="position:absolute; width:200px;left:33px;">
+			</div>
+		</div>
+		<input type="button" name="" id="xiug" value="确认修改" style="display: block; background: #CF2D28;border-radius: 30px;margin: auto; height:45px;color: white;font-size: 18px;"/>
+	</body>
+	<script type="text/javascript">
+		mui.plusReady(function(){
+			var foo = plus.storage.getItem('token');
+//			alert(foo)
+			var backButtonPress = 0;   
+			mui.back = function(event) {  //点击手机返回键时调用
+					guanbi()
+				return false;
+			};
+			//获取密码值；
+			document.getElementById('xiug').addEventListener('tap',function(){
+				var inp=document.getElementsByTagName('input');
+				var jiunum=document.getElementById('jiunum').value;
+				var numbe=document.getElementById('number').value;
+				var numbe1=document.getElementById('number1').value;
+				for(var i=0;i<inp.length-1;i++){
+					if(inp[i].value==''||inp[i]==null){
+						plus.nativeUI.toast('内容不能为空') 
+					}
+				}
+				if(numbe!=numbe1){
+					plus.nativeUI.toast('两次输入密码不一致')
+				}
+				else if(jiunum==numbe){
+					plus.nativeUI.toast('修改密码与原密码相同')
+				}
+				else{
+					var dataO = {oldPassword:jiunum,newPassword:numbe}; 
+					mui.ajax('http://139.196.196.64:8080/edsm/service/modifyPassword',
+					{
+					type:'post',//请求方式。post /get
+					data:dataO,  //如果使用post，向服务器传递参数，使用data属性，可以是一个json，可以是字符串
+					headers:{
+							token:foo
+						},
+					contentLength:dataO.length,//如果使用post请求，传递参数的长度
+					dataType:'json',//服务器返回给我们的参数的类型
+					success:function(data){
+						if(data.result==1){
+							plus.nativeUI.toast('修改成功');
+							var wv = plus.webview.currentWebview();
+							guanbi();
+						}
+					},//请求服务器成功之后的回调函数
+					error:function(xhr,type,e){//请求服务器失败之后的回调函数 
+						alert('请求失败'+xhr.status+"--"+type+"--"+e);
+					}
+				}) 
+				
+				}
+			})
+			
+		})
+		function guanbi(){
+				var wv = plus.webview.currentWebview();
+					var parent = wv.opener();
+//					alert('123')
+						parent.evalJS('gb()');//父页面执行js代码
+						wv.close();
+			}
+	</script>
+</html>
